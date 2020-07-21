@@ -1,15 +1,15 @@
 import java.time.*;
-public CalanderTest
+public class CalanderTest
 {
 	public static void main(String[] args)
 	{
-		LocaleDate date = LocalDate.now();
+		LocalDate date = LocalDate.now();
 		int today = date.getDayOfMonth();
 		int lengthOfMonth = date.lengthOfMonth();
-		Localeday day = today.minusDays(today - 1);
-		int week = day.getValue();
+		LocalDate day = date.minusDays(today - 1);
+		int week = day.getDayOfWeek().getValue();
 		
-		System.out.println("MON TUE WED TUR FRI SAT SUN")；
+		System.out.println("MON TUE WED TUR FRI SAT SUN");
 		for (int i = 1; i < today; i++)
 		{
 			System.out.print("    ");
@@ -17,9 +17,19 @@ public CalanderTest
 		
 		for (int i = 0; i < lengthOfMonth; i++)
 		{
-			if (day )
+			if (day.equals(today))
 			{
-				System.out.printf("%3i")
+				System.out.printf("%3i*", day.getDayOfMonth());
+			}
+			else
+			{
+				System.out.printf("%3i", day.getDayOfMonth());
+			}
+			
+			day.plusDays(1);
+			if (day.getDayOfWeek().getValue() == 7)
+			{
+				System.out.println();
 			}
 		}
 	}
