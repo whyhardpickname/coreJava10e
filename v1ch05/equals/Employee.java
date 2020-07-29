@@ -1,6 +1,7 @@
 package equals;
 
-import java.util.LocalDate;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class Employee
 {
@@ -8,11 +9,11 @@ public class Employee
 	private double salary;
 	private LocalDate hiredate;
 	
-	public Employee(String name, double salary)
+	public Employee(String name, double salary, int year, int month, int day)
 	{
 		this.name = name;
 		this.salary = salary;
-		hiredate = LocalDate.now();
+		hiredate = LocalDate.of(year, month, day);
 	}
 	
 	public String getName()
@@ -25,7 +26,7 @@ public class Employee
 		return salary;
 	}
 	
-	public LocalDate getHiredate()
+	public LocalDate getHireDate()
 	{
 		return hiredate;
 	}
@@ -43,18 +44,22 @@ public class Employee
 		
 		Employee other = (Employee) otherObject;
 		
-		return Object.equals(name, other.name)
-			&& Object.equals(salary, other.salary)
-			&& Object.equals(hiredate, other.hiredate);
+		return Objects.equals(name, other.name)
+			&& salary == other.salary
+			&& Objects.equals(hiredate, other.hiredate);
 	}
 	
-	public int hashcode()
+	public int hashCode()
 	{
-		//toTdo
+		return Objects.hash(name, salary, hiredate);
 	}
 	
 	public String toString()
 	{
-		//toTdo
+		return getClass().getName() 
+			+ "[name=" + name
+			+ ", salary=" + salary
+			+ ", hiredate=" + hiredate
+			+ "]";
 	}
 }

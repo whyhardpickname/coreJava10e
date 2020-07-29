@@ -1,12 +1,14 @@
 package equals;
 
+import java.util.Objects;
+
 public class Manager extends Employee
 {
-	private bonus;
+	private double bonus;
 	
-	public Manager(String name, double salary)
+	public Manager(String name, double salary, int year, int month, int day)
 	{
-		super(name, salary);
+		super(name, salary, year, month, day);
 		bonus = 0;
 	}
 	
@@ -15,18 +17,25 @@ public class Manager extends Employee
 		this.bonus = bonus;
 	}
 	
-	public boolean equals()
+	public boolean equals(Object otherObject)
 	{
-		//toTdo
+		if (!super.equals(otherObject))
+			return false;
+		
+		Manager other = (Manager) otherObject;
+		
+		return bonus == other.bonus;
 	}
 	
-	public int hashcode()
+	public int hashCode()
 	{
-		//toTdo
+		return Objects.hash(getName(), getSalary(), getHireDate(), bonus);
 	}
 	
 	public String toString()
 	{
-		//toTdo
+		return super.toString()
+			+ "[bonus=" + bonus
+			+ "]";
 	}
 }
