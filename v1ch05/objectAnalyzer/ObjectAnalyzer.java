@@ -4,6 +4,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 
 
 
@@ -35,15 +36,71 @@ public class ObjectAnalyzer
 		if (cl.isArray())
 		{
 			String result = cl.getComponentType() + "[]{";
+			
 			for (int i = 0; i < Array.getLength(object); i++)
 			{
-				result += 
+				Object value = Array.get(object, i);
+				if (i > 0)
+				{
+					result += ", ";
+				}
+				if (cl.getComponentType().isPrimitive())
+				{
+					result += value;
+				}
+				
+				else
+				{
+					result += toString(value);
+				}
 			}
+			return result + "}";
 		}
 		
-		Field[] fields = cl.getField();
-		AccessibleObject.setAccessible(fields, true);
+		String result = cl.getName();
 		
+		do
+		{
+			result += "[";
+			Field[] fields = cl.getDeclaredFields();
+			AccessibleObject.setAccessible(fields, true);
+			
+			for (Field f: fields)
+			{
+				if (!Modifier.isStatic(f.getModifiers()))
+				{
+					if (!result.endsWith("["))
+					{
+						result += ", ";
+					}
+					result += f.getName() + "=";
+					try
+					{
+						Class fieldtype = f.getType();
+						Object value = f.get(object);
+						
+						if (fieldtype.isPrimitive())
+						{
+							result += value;
+						}
+					
+						else
+						{
+							result += toString(value);
+						}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			result += "]";
+			cl = cl.getSuperclass();
+		}
+		while(cl != null);
 		
+		return result;
 	}
 }
